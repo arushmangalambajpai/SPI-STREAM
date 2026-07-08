@@ -622,7 +622,65 @@ if __name__ == "__main__":
             "88","88","88","88"
 
         ],
+        # ==========================================
+        # TPM2_GetCapability
+        #
+        # TPM_CC = 0000017A
+        #
+        # Query TPM properties
+        #
+        # capability:
+        # TPM_CAP_TPM_PROPERTIES
+        #
+        # property:
+        # TPM_PT_MANUFACTURER
+        #
+        # count:
+        # 8
+        # ==========================================
 
+
+        "TPM2_GetCapability":
+
+        [
+
+            # TPM_ST_NO_SESSIONS
+
+            "80","01",
+
+
+            # size = 22 bytes
+
+            "00","00","00","16",
+
+
+            # TPM_CC_GetCapability
+
+            "00","00","01","7A",
+
+
+
+            # capability
+            # TPM_CAP_TPM_PROPERTIES
+            # 0x00000006
+
+            "00","00","00","06",
+
+
+
+            # property
+            # TPM_PT_MANUFACTURER
+            # 0x00000105
+
+            "00","00","01","05",
+
+
+
+            # propertyCount
+
+            "00","00","00","08"
+
+        ],
 
         # ==========================================
         # TPM2_PCR_Extend
