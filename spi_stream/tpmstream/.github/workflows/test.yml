@@ -1,0 +1,98 @@
+name: CI
+on: [push]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    container: ubuntu:24.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: apt update && apt install -y libpcap-dev libtss2-dev gcc
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: syphar/restore-virtualenv@v1
+        id: cache-virtualenv
+        # looks for changes in requirements.txt
+        with:
+          requirement_files: requirements.txt
+
+      - uses: syphar/restore-pip-download-cache@v1
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+        # the package installation will only be executed when the
+        # requirements-files have changed.
+      - run: pip install --upgrade pip && pip install . && pip install pytest autoflake black isort cryptography==3.4.8 tpm2_pytss
+        #if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+      - run: pip freeze
+
+      - name: Test
+        run: python -m pytest
+
+  bats:
+    runs-on: ubuntu-latest
+    container: ubuntu:24.04
+    steps:
+      - run: apt update && apt install -y git
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Install dependencies
+        run: apt update && apt install -y libpcap-dev libtss2-dev gcc bats xxd
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: syphar/restore-virtualenv@v1
+        id: cache-virtualenv
+        # looks for changes in requirements.txt
+        with:
+          requirement_files: requirements.txt
+
+      - uses: syphar/restore-pip-download-cache@v1
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+        # the package installation will only be executed when the
+        # requirements-files have changed.
+      - run: pip install .
+        #if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+      - name: Test
+        run: bats test/*.bats
+
+  linters:
+    runs-on: ubuntu-latest
+    container: ubuntu:24.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: apt update && apt install -y libpcap-dev libtss2-dev gcc
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: syphar/restore-virtualenv@v1
+        id: cache-virtualenv
+        # looks for changes in requirements.txt
+        with:
+          requirement_files: requirements.txt
+
+      - uses: syphar/restore-pip-download-cache@v1
+        if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+        # the package installation will only be executed when the
+        # requirements-files have changed.
+      - run: pip install .; pip install pytest autoflake black isort
+        #if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+      - name: Linting
+        run: scripts/linters.sh --check
