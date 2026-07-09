@@ -16,7 +16,7 @@ The complete analyzer is available directly through GitHub Pages:
 ```text
 https://arushmangalambajpai.github.io/SPI-STREAM/web/
 
----
+```
 
 ## Overview
 
@@ -63,7 +63,7 @@ TPM SPI Decoder Engine
     CLI     Web Analyzer
 ```
 
----
+
 
 ## Features
 
