@@ -201,7 +201,7 @@ Advantages:
 ## Clone Repository
 
 ```bash
-git clone https://github.com/<username>/SPI-STREAM.git
+git clone https://github.com/arushmangalambajpai/SPI-STREAM.git
 
 cd SPI-STREAM
 ```
