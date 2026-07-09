@@ -1,0 +1,56 @@
+
+========== REGISTER ==========
+Interface      : FIFO
+Operation      : WRITE
+Byte Length    : 53
+Locality       : 0
+Register Addr  : 0x026
+Register Name  : TPM_DATA_FIFO
+Payload        : ['80', '02', '00', '00', '00', '35', '00', '00', '01', '82', '00', '00', '00', '07', '00', '00', '00', '09', '40', '00', '00', '09', '00', '00', '00', '00', '00', '00', '00', '00', '01', '00', '04', '9F', '13', '87', '30', '6E', 'BB', '7F', 'F8', 'E7', '95', 'E7', 'BE', '77', '56', '36', '66', 'BB', 'F4', '51', '6E']
+
+Description:
+FIFO byte stream transfer.
+
+Summary:
+Host wrote 53 bytes into TPM FIFO.
+
+Possible TPM command stream.
+
+========== TPM COMMAND ==========
+TAG       : TPMI_ST_COMMAND_TAG.SESSIONS
+SIZE      : 53
+CODE      : TPM_CC.PCR_Extend
+COMMAND   : PCR_Extend
+
+TPM Tree:
+[34mCommand[0m                                   [30m[0m[92m.[0m                                              [33m                    [0m [33m[0m
+[34mTPMI_ST_COMMAND_TAG[0m                       [30m|   [0m[92m.tag[0m                                       [33m8002                [0m [33mTPMI_ST_COMMAND_TAG.SESSIONS[0m
+[34mUINT32[0m                                    [30m|   [0m[92m.commandSize[0m                               [33m00000035            [0m [33m53[0m
+[34mTPM_CC[0m                                    [30m|   [0m[92m.commandCode[0m                               [33m00000182            [0m [33mTPM_CC.PCR_Extend[0m
+[34mTPMS_COMMAND_HANDLES_PCR_EXTEND[0m           [30m|   [0m[92m.handles[0m                                   [33m                    [0m [33m[0m
+[34mTPMI_DH_PCR[0m                               [30m|   |   [0m[92m.pcrHandle[0m                             [33m00000007            [0m [33mTPM_HR.PCR.07[0m
+[34mUINT32[0m                                    [30m|   [0m[92m.authSize[0m                                  [33m00000009            [0m [33m9[0m
+[34mTPMS_AUTH_COMMAND[0m                         [30m|   [0m[92m.authorizationArea[0][0m                      [33m                    [0m [33m[0m
+[34mTPMI_SH_AUTH_SESSION[0m                      [30m|   |   [0m[92m.sessionHandle[0m                         [33m40000009            [0m [33mTPM_RS.PW[0m
+[34mTPM2B_NONCE[0m                               [30m|   |   [0m[92m.nonce[0m                                 [33m                    [0m [33m[0m
+[34mUINT16[0m                                    [30m|   |   |   [0m[92m.size[0m                              [33m0000                [0m [33m0[0m
+[34mlist[BYTE][0m                                [30m|   |   |   [0m[92m.buffer[0m                            [33m                    [0m [33m[0m
+[34mTPMA_SESSION[0m                              [30m|   |   [0m[92m.sessionAttributes[0m                     [33m00                  [0m [33m[0m
+[34m[0m                                          [30m|   |   |   [0m[92m.continueSession[0m                   [33m                    [0m [33m.......0[0m
+[34m[0m                                          [30m|   |   |   [0m[92m.auditExclusive[0m                    [33m                    [0m [33m......0.[0m
+[34m[0m                                          [30m|   |   |   [0m[92m.auditReset[0m                        [33m                    [0m [33m.....0..[0m
+[34m[0m                                          [30m|   |   |   [0m[92m.reserved[0m                          [33m                    [0m [33m...00...[0m
+[34m[0m                                          [30m|   |   |   [0m[92m.decrypt[0m                           [33m                    [0m [33m..0.....[0m
+[34m[0m                                          [30m|   |   |   [0m[92m.encrypt[0m                           [33m                    [0m [33m.0......[0m
+[34m[0m                                          [30m|   |   |   [0m[92m.audit[0m                             [33m                    [0m [33m0.......[0m
+[34mTPM2B_AUTH[0m                                [30m|   |   [0m[92m.hmac[0m                                  [33m                    [0m [33m[0m
+[34mUINT16[0m                                    [30m|   |   |   [0m[92m.size[0m                              [33m0000                [0m [33m0[0m
+[34mlist[BYTE][0m                                [30m|   |   |   [0m[92m.buffer[0m                            [33m                    [0m [33m[0m
+[34mTPMS_COMMAND_PARAMS_PCR_EXTEND[0m            [30m|   [0m[92m.parameters[0m                                [33m                    [0m [33m[0m
+[34mTPML_DIGEST_VALUES[0m                        [30m|   |   [0m[92m.digests[0m                               [33m                    [0m [33m[0m
+[34mUINT32[0m                                    [30m|   |   |   [0m[92m.count[0m                             [33m00000001            [0m [33m1[0m
+[34mTPMT_HA[0m                                   [30m|   |   |   [0m[92m.digests[0][0m                        [33m                    [0m [33m[0m
+[34mTPMI_ALG_HASH[0m                             [30m|   |   |   |   [0m[92m.hashAlg[0m                       [33m0004                [0m [33mTPMI_ALG_HASH.SHA[0m
+[34mTPMU_HA[0m                                   [30m|   |   |   |   [0m[92m.digest[0m                        [33m                    [0m [33m[0m
+[34mlist[BYTE][0m                                [30m|   |   |   |   |   [0m[92m.sha1[0m                      [33m9f1387306ebb7ff8e795e7be77563666bbf4516e[0m [33m...0n.......wV6f..Qn[0m
+

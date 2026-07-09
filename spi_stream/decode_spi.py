@@ -736,4 +736,4 @@ if __name__ == "__main__":
 
         "\nALL SPI PIPELINE TESTS COMPLETE\n"
 
-    )
+    ) 

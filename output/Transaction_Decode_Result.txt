@@ -1,0 +1,56 @@
+
+========== REGISTER ==========
+Interface      : FIFO
+Operation      : READ
+Byte Length    : 4
+Locality       : 0
+Register Addr  : 0x018
+Register Name  : TPM_STS
+Payload        : ['00', '00', '00', '00']
+
+Description:
+[27:26] tpmFamily = 0
+
+[23:8] burstCount = 0
+
+[7] stsValid = 0
+
+[6] commandReady = 0
+
+[4] dataAvail = 0
+
+[3] expect = 0
+
+[2] selfTestDone = 0
+
+Summary:
+
+
+
+
+========== REGISTER ==========
+Interface      : FIFO
+Operation      : READ
+Byte Length    : 4
+Locality       : 0
+Register Addr  : 0x018
+Register Name  : TPM_STS
+Response Payload: ['90', '0A', '00', '04']
+
+Description:
+[27:26] tpmFamily = 0
+
+[23:8] burstCount = 2560
+
+[7] stsValid = 0
+
+[6] commandReady = 0
+
+[4] dataAvail = 0
+
+[3] expect = 0
+
+[2] selfTestDone = 1
+
+Summary:
+

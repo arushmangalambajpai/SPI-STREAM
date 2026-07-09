@@ -1,0 +1,5 @@
+==================================================
+PCR EXTEND SUMMARY COMPLETE
+==================================================
+Detected PCR_Extend commands: 34
+Output: pcr_extend_summary.txt
