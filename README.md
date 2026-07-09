@@ -278,7 +278,7 @@ The official SPI-STREAM Web Analyzer is hosted using GitHub Pages:
 
 ```text
 https://arushmangalambajpai.github.io/SPI-STREAM/web/
----
+```
 It runs the same decoder engine used by the CLI through Pyodide.
 
 # Input CSV Format
