@@ -48,9 +48,11 @@ try:
 
 except Exception as e:
 
+    print("\nTPMSTREAM IMPORT FAILED")
+    print(type(e).__name__)
+    print(e)
 
     TPMSTREAM_AVAILABLE = False
-
 
 
 
@@ -277,7 +279,8 @@ def decode_tpm_command(payload):
     Used by decode_spi.py
     """
 
-
+    print("TPM COMMAND INPUT:")
+    print(payload[:12])
 
     # Always get header manually first
 
@@ -409,8 +412,6 @@ def decode_tpm_command(payload):
 
 
     return output
-
-
 
 
 
