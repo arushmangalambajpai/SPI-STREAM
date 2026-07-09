@@ -1,0 +1,40 @@
+SPI-STREAM Third Party Notices
+==============================
+
+
+TPMStream
+---------
+
+SPI-STREAM includes and uses TPMStream for TPM command structure parsing
+and TPM object representation.
+
+Original Project:
+TPMStream
+
+Author:
+Johannes Holland
+
+License:
+BSD 2-Clause License
+
+Copyright (c) 2022, Johannes Holland
+All rights reserved.
+
+
+The original TPMStream BSD 2-Clause license text is preserved inside:
+
+spi_stream/tpmstream/LICENSE
+
+
+SPI-STREAM builds additional functionality around TPMStream including:
+
+- SPI transaction reconstruction
+- TPM FIFO/CRB register decoding
+- TPM command and response analysis
+- PCR Extend extraction
+- CLI interface
+- Browser-based Pyodide analyzer
+
+
+All modifications and additional SPI-STREAM components are maintained
+separately under the SPI-STREAM project license.
