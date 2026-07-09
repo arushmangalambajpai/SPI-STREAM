@@ -1,0 +1,13 @@
+
+/* Invisible Scrollbars for clean look */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+.step-disabled { opacity: 0.3; pointer-events: none; filter: grayscale(100%); transition: all 0.3s; }
+
+/* Terminal glow effects */
+.terminal-glow { text-shadow: 0 0 10px rgba(52, 211, 153, 0.2); }
+.bg-grid-pattern { background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px); background-size: 24px 24px; }
+    
