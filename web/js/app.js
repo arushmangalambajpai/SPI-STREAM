@@ -347,6 +347,186 @@
                     "[OK] System Ready. Awaiting user input.\n",
                     "success"
                 );
+
+                appendToTerminal(
+                "==============================================================",
+                "system"
+                );
+                
+                appendToTerminal(
+                "SPI-STREAM",
+                "success"
+                );
+                
+                appendToTerminal(
+                "TPM 2.0 SPI Transaction Reconstruction & Analysis Framework"
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Developed by Arush Mangalam Bajpai",
+                "system"
+                );
+                
+                appendToTerminal(
+                "==============================================================",
+                "system"
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "========================= USER GUIDE =========================",
+                "success"
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Single Transaction Decode",
+                "system"
+                );
+                
+                appendToTerminal(
+                "  Decode individual TPM transactions using raw MOSI"
+                );
+                
+                appendToTerminal(
+                "  or complete MOSI + MISO SPI data."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Supported Interfaces",
+                "system"
+                );
+                
+                appendToTerminal(
+                "  Supports both TPM 2.0 FIFO and CRB interfaces."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "CSV Analysis Pipeline",
+                "system"
+                );
+                
+                appendToTerminal(
+                "  Upload a Saleae Logic Analyzer CSV to reconstruct"
+                );
+                
+                appendToTerminal(
+                "  and analyze the complete TPM communication stream."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Step 1  - Transaction Builder"
+                );
+                
+                appendToTerminal(
+                "          Reconstructs complete SPI transactions."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Step 2  - Transaction Decoder"
+                );
+                
+                appendToTerminal(
+                "          Decodes TPM register accesses and TPM commands."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Step 3  - TPM Command Summary"
+                );
+                
+                appendToTerminal(
+                "          Summarizes all TPM commands observed."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Step 4  - PCR Extend Summary"
+                );
+                
+                appendToTerminal(
+                "          Lists PCR Extend operations and digests."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Transaction Inspector",
+                "system"
+                );
+                
+                appendToTerminal(
+                "  Decode any reconstructed transaction by index."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Transaction Explorer",
+                "system"
+                );
+                
+                appendToTerminal(
+                "  Browse reconstructed transactions interactively"
+                );
+                
+                appendToTerminal(
+                "  and click any entry to view its complete decode."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Downloads",
+                "system"
+                );
+                
+                appendToTerminal(
+                "  Export generated CSV files and analysis reports."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "Documentation",
+                "system"
+                );
+                
+                appendToTerminal(
+                "  For complete documentation and updates,"
+                );
+                
+                appendToTerminal(
+                "  visit the project GitHub repository."
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "==============================================================",
+                "system"
+                );
+                
+                appendToTerminal("");
+                
+                appendToTerminal(
+                "[OK] Ready for analysis.",
+                "success"
+                );
             } catch (error) {
                 appendToTerminal(`[FATAL] Failed to load engine.\n${error}`, "error");
                 document.getElementById('engine-status-text').textContent = "Engine Failed";
