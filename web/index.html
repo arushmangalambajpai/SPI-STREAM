@@ -178,6 +178,69 @@
                         `).join(''));
                     </script>
                 </div>
+
+                <!-- ========================================== -->
+                <!-- TRANSACTION INSPECTOR                      -->
+                <!-- ========================================== -->
+
+                <div id="decode-index-card"
+                    class="opacity-50 pointer-events-none space-y-3 pt-6">
+
+                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                        Transaction Inspector
+                    </p>
+
+                    <div id="decode-index-panel"
+                        class="bg-base-900 border border-base-700 rounded-lg p-3 flex items-center justify-between group transition-all">
+
+                        <div class="flex items-center gap-3">
+
+                            <div id="decode-index-icon"
+                                class="w-6 h-6 rounded bg-base-800 border border-base-700 text-[10px] font-bold flex items-center justify-center text-gray-500 transition-colors">
+
+                                <i data-lucide="search" class="w-3.5 h-3.5"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span class="text-xs font-medium text-gray-400">
+                                    Decode Transaction by Index
+                                </span>
+
+                                <p class="text-[10px] text-gray-500 mt-0.5">
+                                    Available after Transaction Builder completes
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="flex gap-2">
+
+                        <input
+                            id="decode-index-input"
+                            type="number"
+                            placeholder="Transaction Index"
+                            disabled
+                            class="flex-1 bg-base-900 border border-base-700 rounded-lg px-3 py-2 text-xs font-mono text-gray-300 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 outline-none disabled:opacity-40">
+
+                        <button
+                            id="decode-index-btn"
+                            disabled
+                            onclick="decodeTransactionIndex()"
+                            class="px-5 bg-base-700 hover:bg-white hover:text-black text-gray-200 text-xs font-bold rounded-lg transition-all active:scale-95 disabled:opacity-40">
+
+                            Decode
+
+                        </button>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>

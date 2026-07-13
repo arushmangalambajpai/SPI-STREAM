@@ -349,6 +349,7 @@
                 document.getElementById('engine-status-text').textContent = "Engine Failed";
             }
         }
+        
 
         async function runSingleDecode() {
             if (!isPyodideReady) {
@@ -404,15 +405,30 @@
                         print(
                             "========== MOSI =========="
                         )
-
-                        mosi_obj.show()
-
-
-                        print(
-                            "\\n========== MISO =========="
-                        )
-
-                        miso_obj.show()
+                                        
+                        if mosi_obj is not None:
+                                        
+                            mosi_obj.show()
+                                        
+                        else:
+                                        
+                            print("No MOSI object generated.")
+                                        
+                        if miso_obj is not None:
+                                        
+                            print(
+                                "\\n========== MISO =========="
+                            )
+                                        
+                            miso_obj.show()
+                                        
+                        else:
+                                        
+                            print(
+                                "\\n========== MISO =========="
+                            )
+                                        
+                            print("No MISO object generated for this transaction.")
 
                 
                 
@@ -612,6 +628,54 @@
                     
                         "success"
                     
+                    );
+                    // Unlock Transaction Inspector
+
+                    document
+                    .getElementById(
+                        "decode-index-card"
+                    )
+                    .classList.remove(
+                        "opacity-50",
+                        "pointer-events-none"
+                    );
+
+                    document
+                    .getElementById(
+                        "decode-index-input"
+                    )
+                    .disabled = false;
+
+                    document
+                    .getElementById(
+                        "decode-index-btn"
+                    )
+                    .disabled = false;
+
+                    const panel =
+                    document.getElementById(
+                        "decode-index-panel"
+                    );
+
+                    panel.classList.add(
+                        "is-active"
+                    );
+
+                    const icon =
+                    document.getElementById(
+                        "decode-index-icon"
+                    );
+
+                    icon.classList.remove(
+                        "text-gray-500",
+                        "border-base-700",
+                        "bg-base-800"
+                    );
+
+                    icon.classList.add(
+                        "text-blue-400",
+                        "border-blue-500/30",
+                        "bg-blue-500/10"
                     );
 // Unlock decoded transaction step
 
@@ -838,6 +902,213 @@
             
             
             }
+        }
+        async function decodeTransactionIndex(){
+        
+            if(!isPyodideReady){
+            
+                appendToTerminal(
+                    "[ERR] Engine not ready.",
+                    "error"
+                );
+            
+                return;
+            }
+        
+            const index =
+            document.getElementById(
+                "decode-index-input"
+            ).value.trim();
+        
+            if(index === ""){
+            
+                appendToTerminal(
+                    "[ERR] Transaction index required.",
+                    "error"
+                );
+            
+                return;
+            }
+        
+            appendToTerminal(
+                `\n$ inspect_transaction --index ${index}`,
+                "system"
+            );
+        
+            pyodideInstance.globals.set(
+                "ui_index",
+                parseInt(index)
+            );
+        
+            try{
+            
+                const tx =
+                await pyodideInstance.runPythonAsync(`
+                
+                import csv
+                import json
+
+                result = None
+
+                with open(
+                    "clean_spi_transactions.csv",
+                    newline=""
+                ) as f:
+
+                    reader = csv.DictReader(f)
+
+                    for row in reader:
+
+                        if int(row["Index"]) == ui_index:
+
+                            result = json.dumps({
+
+                                "mosi": row["MOSI"].strip(),
+
+                                "miso": row["MISO"].strip()
+
+                            })
+
+                            break
+
+                result
+                
+                `);
+
+                console.log(tx);
+                appendToTerminal(
+                    JSON.stringify(tx),
+                    "system"
+                );
+
+                if(tx === null){
+
+                    appendToTerminal(
+                        "[ERR] Transaction index not found.",
+                        "error"
+                    );
+                
+                    return;
+                }
+                
+                const data = JSON.parse(tx);
+                const mosi = data.mosi;
+                const miso = data.miso;
+
+                const mode =
+                (data.miso && data.miso.length > 0)
+                    ? "FULL"
+                    : "MOSI";
+                pyodideInstance.globals.set("ui_mosi", mosi);
+                pyodideInstance.globals.set("ui_miso", miso);
+                pyodideInstance.globals.set("ui_interface", "FIFO");
+                pyodideInstance.globals.set("ui_mode", mode);
+
+                const result =
+                await pyodideInstance.runPythonAsync(`
+                
+                import io
+                import contextlib
+                
+                
+                output = io.StringIO()
+                with contextlib.redirect_stdout(output):
+
+                    if ui_mode == "MOSI":
+
+                        obj = decode_mosi(
+                            ui_mosi,
+                            ui_interface
+                        )
+
+                        obj.show()
+
+
+                    else:
+
+                        mosi_obj, miso_obj = decode_transaction(
+                            ui_mosi,
+                            ui_miso,
+                            ui_interface
+                        )
+
+
+                        print(
+                            "========== MOSI =========="
+                        )
+                                        
+                        if mosi_obj is not None:
+                                        
+                            mosi_obj.show()
+                                        
+                        else:
+                                        
+                            print("No MOSI object generated.")
+                                        
+                        if miso_obj is not None:
+                                        
+                            print(
+                                "\\n========== MISO =========="
+                            )
+                                        
+                            miso_obj.show()
+                                        
+                        else:
+                                        
+                            print(
+                                "\\n========== MISO =========="
+                            )
+                                        
+                            print("No MISO object generated for this transaction.")
+
+                
+                
+                output.getvalue()
+                
+                `);
+
+                appendToTerminal(result);
+
+                appendToTerminal(
+                    "[OK] Transaction inspection completed.\n",
+                    "success"
+                );
+
+                pyodideInstance.globals.set(
+                    "ui_mosi",
+                    mosi
+                );
+
+                pyodideInstance.globals.set(
+                    "ui_miso",
+                    miso
+                );
+
+                pyodideInstance.globals.set(
+                    "ui_interface",
+                    "FIFO"
+                );
+
+                pyodideInstance.globals.set(
+                    "ui_mode",
+                    mode
+                );
+                
+            
+            }
+        
+            catch(error){
+            
+                appendToTerminal(
+                
+                    "[ERR]\\n"+error,
+                
+                    "error"
+                
+                );
+            
+            }
+        
         }
 
         function downloadFile(filename){
