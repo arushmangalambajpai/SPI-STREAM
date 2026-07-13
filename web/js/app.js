@@ -6,6 +6,9 @@
         let pyodideInstance = null;
         let isPyodideReady = false;
         let currentMode = 'MOSI';
+        let explorerTransactions = [];
+        let selectedExplorerRow = null;
+        
 
         
         
@@ -652,6 +655,38 @@
                     )
                     .disabled = false;
 
+                    document
+                    .getElementById(
+                        "explorer-card"
+                    )
+                    .classList.remove(
+                        "opacity-50",
+                        "pointer-events-none"
+                    );
+
+                    document
+                    .getElementById(
+                        "explorer-btn"
+                    )
+                    .disabled = false;
+
+                    const explorerIcon =
+                    document.getElementById(
+                        "explorer-icon"
+                    );
+
+                    explorerIcon.classList.remove(
+                        "text-gray-500",
+                        "border-base-700",
+                        "bg-base-800"
+                    );
+
+                    explorerIcon.classList.add(
+                        "text-blue-400",
+                        "border-blue-500/30",
+                        "bg-blue-500/10"
+                    );
+
                     const panel =
                     document.getElementById(
                         "decode-index-panel"
@@ -1253,5 +1288,248 @@
         
         
         }
-        window.addEventListener('load', initPyodideEngine);
 
+        async function loadExplorerTransactions(){
+
+            const csv =
+            await pyodideInstance.runPythonAsync(`
+            
+        import csv
+        import json
+            
+        rows = []
+            
+        with open(
+            "clean_spi_transactions.csv",
+            newline=""
+        ) as f:
+            
+            reader = csv.DictReader(f)
+            
+            for row in reader:
+            
+                rows.append({
+            
+                    "index": int(row["Index"]),
+            
+                    "length": int(row["Length"]),
+            
+                    "mosi": row["MOSI"],
+            
+                    "miso": row["MISO"]
+            
+                })
+            
+        json.dumps(rows)
+            
+            `);
+            
+            explorerTransactions =
+            JSON.parse(csv);
+            
+        }
+        function populateExplorer(){
+        
+            const tbody =
+            document.getElementById(
+                "transactions-tbody"
+            );
+        
+            tbody.innerHTML = "";
+        
+            explorerTransactions.forEach(tx=>{
+            
+                const tr =
+                document.createElement(
+                    "tr"
+                );
+            
+                tr.className =
+                "row-transition hover:bg-base-700/30 cursor-pointer border-l-4 border-transparent";
+                tr.onclick = async () => {
+                
+                    if(selectedExplorerRow){
+                    
+                        selectedExplorerRow.classList.remove(
+                            "selected-transaction"
+                        );
+                    
+                    }
+                
+                    tr.classList.add(
+                        "selected-transaction"
+                    );
+                
+                    selectedExplorerRow = tr;
+                
+                    await decodeExplorerTransaction(tx);
+                
+                };
+            
+                tr.innerHTML = `
+            
+        <td class="py-1 px-3 font-medium text-gray-500">
+        ${tx.index}
+        </td>
+            
+        <td class="py-1 px-3 text-blue-400 font-semibold">
+        ${tx.length}
+        </td>
+            
+        <td class="py-1 px-3 text-gray-300 truncate max-w-[90px]">
+        ${tx.mosi.substring(0,32)}...
+        </td>
+            
+        <td class="py-1 px-3 text-emerald-400/80 truncate max-w-[90px]">
+        ${tx.miso.substring(0,32)}...
+        </td>
+            
+        `;
+            
+                tbody.appendChild(
+                    tr
+                );
+            
+            });
+        
+            document.querySelector(
+                "#transaction-explorer-modal strong"
+            ).textContent =
+            explorerTransactions.length;
+        
+        }
+        async function decodeExplorerTransaction(tx){
+        
+            const mosi = tx.mosi;
+            const miso = tx.miso;
+        
+            const mode =
+            (miso && miso.length > 0)
+                ? "FULL"
+                : "MOSI";
+        
+            pyodideInstance.globals.set(
+                "ui_mosi",
+                mosi
+            );
+        
+            pyodideInstance.globals.set(
+                "ui_miso",
+                miso
+            );
+        
+            pyodideInstance.globals.set(
+                "ui_interface",
+                "FIFO"
+            );
+        
+            pyodideInstance.globals.set(
+                "ui_mode",
+                mode
+            );
+        
+            try{
+            
+                const result =
+                await pyodideInstance.runPythonAsync(`
+                
+        import io
+        import contextlib
+                
+        output = io.StringIO()
+                
+        with contextlib.redirect_stdout(output):
+                
+            if ui_mode == "MOSI":
+                
+                obj = decode_mosi(
+                    ui_mosi,
+                    ui_interface
+                )
+                
+                obj.show()
+                
+            else:
+                
+                mosi_obj, miso_obj = decode_transaction(
+                    ui_mosi,
+                    ui_miso,
+                    ui_interface
+                )
+                
+                print("========== MOSI ==========")
+                
+                if mosi_obj is not None:
+                
+                    mosi_obj.show()
+                
+                else:
+                
+                    print("No MOSI object generated.")
+                
+                print("\\n========== MISO ==========")
+                
+                if miso_obj is not None:
+                
+                    miso_obj.show()
+                
+                else:
+                
+                    print("No MISO object generated.")
+                
+        output.getvalue()
+                
+                `);
+                
+                document.getElementById(
+                    "decoded-viewer"
+                ).textContent =
+                result;
+            
+            }
+        
+            catch(error){
+            
+                document.getElementById(
+                    "decoded-viewer"
+                ).textContent =
+                error;
+            
+            }
+        
+        }
+
+        async function openTransactionExplorer(){
+
+            if(
+                explorerTransactions.length === 0
+            ){
+            
+                await loadExplorerTransactions();
+            
+            }
+        
+            populateExplorer();
+        
+            document
+                .getElementById(
+                    "transaction-explorer-modal"
+                )
+                .classList.remove(
+                    "hidden"
+                );
+            
+        }
+        function closeTransactionExplorer(){
+
+            document
+                .getElementById(
+                    "transaction-explorer-modal"
+                )
+                .classList.add(
+                    "hidden"
+                );
+            
+        }
+        window.addEventListener('load', initPyodideEngine);
+        
