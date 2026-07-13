@@ -16,4 +16,4 @@ DO NOT IMPORT CLI HERE
 """
 
 
-print("SPI-STREAM bridge loaded")
+print("TPM-SCOPE bridge loaded")

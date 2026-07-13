@@ -127,7 +127,7 @@
                 
                 appendToTerminal(
                 
-                    "[SYS] Loading SPI-STREAM package...",
+                    "[SYS] Loading TPM-SCOPE package...",
                 
                     "system"
                 
@@ -354,7 +354,7 @@
                 );
                 
                 appendToTerminal(
-                "SPI-STREAM",
+                "TPM-SCOPE",
                 "success"
                 );
                 
