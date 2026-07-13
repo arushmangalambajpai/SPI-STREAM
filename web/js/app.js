@@ -107,7 +107,9 @@
                 const statusIcon = statusBadge.querySelector('i');
                 const statusText = document.getElementById('engine-status-text');
                 
-                pyodideInstance = await loadPyodide();
+                pyodideInstance = await loadPyodide({
+                    indexURL: "pyodide/"
+                });
                             
                 await pyodideInstance.loadPackage(
                     "micropip"
@@ -120,10 +122,10 @@
                 );
 
 
-                await micropip.install(
-                    "dpkt",
-                    "colorama"
-                );   
+                await micropip.install([
+                    "packages/dpkt-1.9.8-py3-none-any.whl",
+                    "packages/colorama-0.4.6-py2.py3-none-any.whl"
+                ]);
                 
                 appendToTerminal(
                 

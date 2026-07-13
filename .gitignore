@@ -1,25 +1,16 @@
 # Python
+venv/
 __pycache__/
 *.pyc
-*.pyo
 
-# Virtual environments
-venv/
-.venv/
+# Electron
+app/node_modules/
+app/release/
 
-# IDE
-.vscode/
-.idea/
+# Release ZIPs
+Release/
+*.zip
 
 # OS
-.DS_Store
 Thumbs.db
-
-# Generated CSV outputs
-clean_spi_transactions.csv
-decoded_transactions.csv
-tpm_command_summary.txt
-pcr_extend_summary.txt
-
-# Logs
-*.log
+.DS_Store

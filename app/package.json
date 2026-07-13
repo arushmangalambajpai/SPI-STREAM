@@ -1,0 +1,49 @@
+{
+  "name": "tpm-scope",
+  "version": "1.0.0",
+  "description": "TPM-Scope Desktop",
+  "main": "main.js",
+
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --dir",
+    "portable": "electron-builder --win portable"
+  },
+
+  "devDependencies": {
+    "electron": "^37.2.4",
+    "electron-builder": "^26.15.3"
+  },
+
+  "allowScripts": {
+    "electron@37.10.3": true,
+    "electron-winstaller@5.4.0": true
+  },
+
+  "build": {
+    "appId": "com.arush.tpmscope",
+    
+    "productName": "TPM-Scope",
+    
+    "directories": {
+      "output": "release"
+    },
+  
+    "files": [
+      "**/*"
+    ],
+  
+    "extraResources": [
+      {
+        "from": "../web",
+        "to": "web"
+      }
+    ],
+  
+    "win": {
+      "target": [
+        "portable"
+      ]
+    }
+  }
+}
