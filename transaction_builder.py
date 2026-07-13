@@ -46,7 +46,7 @@ from spi_header_decoder import convert_spi_to_stream_arr
 
 
 
-INPUT_FILE="rpi_boot_csv.csv"
+
 
 OUTPUT_FILE="clean_spi_transactions.csv"
 
@@ -389,7 +389,7 @@ def find_tpm_command(data):
 # ==========================================================
 
 
-def build_transactions():
+def build_transactions(input_file):
 
 
     transactions=[]
@@ -402,7 +402,7 @@ def build_transactions():
 
     with open(
 
-        INPUT_FILE,
+        input_file,
 
         newline=""
 
@@ -1167,10 +1167,10 @@ def save(data):
 # ==========================================================
 
 
-def main():
+def main(input_file):
 
 
-    raw=build_transactions()
+    raw=build_transactions(input_file)
 
 
     clean=process(raw)
@@ -1201,4 +1201,4 @@ def main():
 
 if __name__=="__main__":
 
-    main()
+    main("rpi_boot_csv.csv")

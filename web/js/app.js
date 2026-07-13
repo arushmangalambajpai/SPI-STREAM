@@ -607,7 +607,7 @@
 
                         with contextlib.redirect_stdout(buffer):
 
-                            main()
+                            main(uploaded_csv)
 
 
                         buffer.getvalue()
