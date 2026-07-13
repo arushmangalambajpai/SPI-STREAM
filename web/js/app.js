@@ -1516,9 +1516,29 @@
             );
         
             tbody.innerHTML = "";
+            const query =
+            document.getElementById(
+                "transaction-search"
+            ).value
+            .toLowerCase()
+            .trim();
         
             explorerTransactions.forEach(tx=>{
-            
+                const searchable = (
+
+                    tx.index + " " +
+                    tx.length + " " +
+                    tx.mosi + " " +
+                    tx.miso
+
+                ).toLowerCase();
+
+                if(
+                    query &&
+                    !searchable.includes(query)
+                ){
+                    return;
+                }
                 const tr =
                 document.createElement(
                     "tr"
@@ -1711,5 +1731,20 @@
                 );
             
         }
-        window.addEventListener('load', initPyodideEngine);
-        
+        window.addEventListener(
+            "load",
+            () => {
+            
+                initPyodideEngine();
+            
+                document
+                .getElementById(
+                    "transaction-search"
+                )
+                .addEventListener(
+                    "input",
+                    populateExplorer
+                );
+            
+            }
+        );
