@@ -633,6 +633,7 @@
         // ==========================================
         
         let hasUploadedCSV = false;
+        let uploadMode = "logic";
 
         async function handleFileUpload(event) {
         
@@ -728,14 +729,131 @@
             
             
             
-                hasUploadedCSV = true;
-            
-            
-            
-                document
-                    .getElementById("step-1")
-                    .classList
-                    .remove("step-disabled");
+                if(uploadMode === "logic"){
+                
+                    hasUploadedCSV = true;
+                
+                    document
+                        .getElementById("step-1")
+                        .classList
+                        .remove("step-disabled");
+                
+                }
+                else{
+                
+                    await pyodideInstance.runPythonAsync(`
+                import shutil
+                    
+                shutil.copyfile(
+                    uploaded_csv,
+                    "clean_spi_transactions.csv"
+                )
+                `);
+                    
+                    appendToTerminal(
+                        "[OK] Clean Transactions imported.",
+                        "success"
+                    );
+                
+                    // Unlock Transaction Inspector
+                
+                    document
+                    .getElementById(
+                        "decode-index-card"
+                    )
+                    .classList.remove(
+                        "opacity-50",
+                        "pointer-events-none"
+                    );
+                
+                    document
+                    .getElementById(
+                        "decode-index-input"
+                    )
+                    .disabled = false;
+                
+                    document
+                    .getElementById(
+                        "decode-index-btn"
+                    )
+                    .disabled = false;
+                
+                    // Unlock Explorer
+                
+                    document
+                    .getElementById(
+                        "explorer-card"
+                    )
+                    .classList.remove(
+                        "opacity-50",
+                        "pointer-events-none"
+                    );
+                
+                    document
+                    .getElementById(
+                        "explorer-btn"
+                    )
+                    .disabled = false;
+                
+                    const explorerIcon =
+                    document.getElementById(
+                        "explorer-icon"
+                    );
+                
+                    explorerIcon.classList.remove(
+                        "text-gray-500",
+                        "border-base-700",
+                        "bg-base-800"
+                    );
+                
+                    explorerIcon.classList.add(
+                        "text-blue-400",
+                        "border-blue-500/30",
+                        "bg-blue-500/10"
+                    );
+                
+                    const panel =
+                    document.getElementById(
+                        "decode-index-panel"
+                    );
+                
+                    panel.classList.add(
+                        "is-active"
+                    );
+                
+                    const icon =
+                    document.getElementById(
+                        "decode-index-icon"
+                    );
+                
+                    icon.classList.remove(
+                        "text-gray-500",
+                        "border-base-700",
+                        "bg-base-800"
+                    );
+                
+                    icon.classList.add(
+                        "text-blue-400",
+                        "border-blue-500/30",
+                        "bg-blue-500/10"
+                    );
+                
+                    // Unlock Step 2
+                
+                    let step2 =
+                    document.getElementById(
+                        "step-2"
+                    );
+                
+                    step2.classList.remove(
+                        "step-disabled"
+                    );
+                
+                    step2.classList.add(
+                        "is-active"
+                    );
+                
+                }
             
             
             }
@@ -1422,6 +1540,25 @@
         
         
         }
+        function setUploadMode(mode){
+        
+            uploadMode = mode;
+        
+            const text = document.getElementById("upload-text");
+        
+            if(mode === "logic"){
+            
+                text.innerHTML = "Upload Logic Analyzer CSV";
+            
+            }
+        
+            else{
+            
+                text.innerHTML = "Upload Clean Transactions CSV";
+            
+            }
+        
+        }
         function displayTextFile(filename){
         
         
@@ -1733,6 +1870,90 @@
                 );
             
         }
+
+        
+        function downloadTextFile(filename, text){
+        
+            const blob = new Blob(
+                [text],
+                { type: "text/plain;charset=utf-8" }
+            );
+        
+            const url = URL.createObjectURL(blob);
+        
+            const a = document.createElement("a");
+        
+            a.href = url;
+            a.download = filename;
+        
+            document.body.appendChild(a);
+        
+            a.click();
+        
+            document.body.removeChild(a);
+        
+            URL.revokeObjectURL(url);
+        
+        }
+
+        function downloadTerminalOutput(){
+        
+            const terminal =
+                document.getElementById(
+                    "terminal-output"
+                );
+            
+            downloadTextFile(
+            
+                "terminal_output.txt",
+            
+                terminal.innerText
+            
+            );
+        
+            appendToTerminal(
+                "[OK] Terminal output downloaded.",
+                "success"
+            );
+        
+        }
+
+        function downloadExplorerOutput(){
+        
+            const viewer =
+                document.getElementById(
+                    "decoded-viewer"
+                );
+            
+            const text =
+                viewer.innerText.trim();
+            
+            if(text.length === 0){
+            
+                appendToTerminal(
+                    "[ERR] Nothing to download.",
+                    "error"
+                );
+            
+                return;
+            
+            }
+        
+            downloadTextFile(
+            
+                "decoded_transaction.txt",
+            
+                text
+            
+            );
+        
+            appendToTerminal(
+                "[OK] Decoded transaction downloaded.",
+                "success"
+            );
+        
+        }
+
         window.addEventListener(
             "load",
             () => {
