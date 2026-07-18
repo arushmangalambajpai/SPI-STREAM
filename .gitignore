@@ -23,3 +23,25 @@ pcr_extend_summary.txt
 
 # Logs
 *.log
+
+# ==========================================================
+# Electron
+# ==========================================================
+
+app/node_modules/
+app/release/
+app/dist/
+
+# Build logs
+app/npm-debug.log*
+app/yarn-debug.log*
+app/yarn-error.log*
+
+# Electron Builder
+app/.cache/
+app/.electron/
+app/.webpack/
+
+# OS files
+.DS_Store
+Thumbs.db
