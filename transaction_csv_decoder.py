@@ -67,6 +67,12 @@ from register_decoder import (
 
 )
 
+from register_payload_decoder import (
+
+    decode_register_payload
+
+)
+
 
 from tpm_command_decoder import (
 
@@ -167,6 +173,8 @@ def make_empty_row(index,stream):
         "Reg_Name":"",
 
         "Reg_Payload":"",
+
+        "Register_Summary":"",
 
         "Tag":"",
 
@@ -293,7 +301,11 @@ def decode_stream(index,stream_name,mosi,miso):
 
 
     row["Reg_Name"]=str(reg_name)
+    # ======================================================
+    # Register payload summary
+    # ======================================================
 
+   
 
 
 
@@ -309,6 +321,32 @@ def decode_stream(index,stream_name,mosi,miso):
         # use actual bytes after SPI header
 
         mosi_payload = mosi[4:]
+
+        # Register Summary
+
+        try:
+        
+            summary = decode_register_payload(
+            
+                reg_name,
+
+                mosi_payload,
+
+                operation
+
+            )
+
+            row["Register_Summary"] = safe_get(
+            
+                summary,
+
+                "summary"
+
+            )
+
+        except:
+        
+            row["Register_Summary"] = ""
 
 
         row["Reg_Payload"]=join_bytes(
@@ -445,7 +483,46 @@ def decode_stream(index,stream_name,mosi,miso):
 
         miso_payload=miso[4:]
 
+        # ======================================================
+        # MISO has no transport header on the wire.
+        #
+        # The MOSI header was reused internally only to decode
+        # the transaction correctly.
+        # Therefore clear the transport fields in the CSV.
+        # ======================================================
+        # Register Summary
 
+        try:
+        
+            summary = decode_register_payload(
+            
+                reg_name,
+
+                miso_payload,
+
+                operation
+
+            )
+
+            row["Register_Summary"] = safe_get(
+            
+                summary,
+
+                "summary"
+
+            )
+
+        except:
+        
+            row["Register_Summary"] = ""
+            
+        row["OpDirn"] = ""
+
+        row["ByteSize"] = ""
+
+        row["Locality"] = ""
+
+        row["Reg_Addr"] = ""
 
         row["Reg_Payload"]=join_bytes(
 
@@ -671,6 +748,8 @@ def main():
                 "Reg_Name",
 
                 "Reg_Payload",
+
+                "Register_Summary",
 
                 "Tag",
 

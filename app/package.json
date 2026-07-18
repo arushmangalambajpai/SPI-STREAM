@@ -1,0 +1,90 @@
+{
+  "name": "tpm-scope",
+  "version": "1.0.0",
+  "description": "TPM-SCOPE - TPM 2.0 SPI Transaction Reconstruction and Analysis Framework",
+
+  "author": "Arush Mangalam Bajpai",
+
+  "license": "MIT",
+
+  "main": "main.js",
+
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --dir",
+    "portable": "electron-builder --win portable",
+    "windows": "electron-builder --win",
+    "linux": "electron-builder --linux AppImage tar.gz"
+  },
+
+  "devDependencies": {
+    "electron": "^37.2.4",
+    "electron-builder": "^26.15.3"
+  },
+
+  "allowScripts": {
+    "electron@37.10.3": true,
+    "electron-winstaller@5.4.0": true
+  },
+
+  "build": {
+    "appId": "com.arush.tpmscope",
+
+    "productName": "TPM-Scope",
+
+    "copyright": "Copyright © 2026 Arush Mangalam Bajpai",
+
+    "directories": {
+      "output": "release"
+    },
+
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json",
+      "node_modules/**/*"
+    ],
+
+    "extraResources": [
+      {
+        "from": "../web",
+        "to": "web"
+      }
+    ],
+
+    "asar": true,
+
+    "compression": "normal",
+
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "tar.gz",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Utility"
+    }
+  }
+}

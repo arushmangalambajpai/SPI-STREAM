@@ -1,0 +1,58 @@
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
+
+function createWindow() {
+
+    const win = new BrowserWindow({
+
+        width: 1600,
+        height: 900,
+
+        minWidth: 1200,
+        minHeight: 700,
+
+        autoHideMenuBar: true,
+
+        webPreferences: {
+
+            preload: path.join(__dirname, "preload.js"),
+
+            contextIsolation: true,
+
+            nodeIntegration: false
+
+        }
+
+    });
+
+    const indexPath =
+    app.isPackaged
+        ? path.join(
+            process.resourcesPath,
+            "web",
+            "index.html"
+          )
+        : path.join(
+            __dirname,
+            "..",
+            "web",
+            "index.html"
+          );
+      
+    console.log(indexPath);
+      
+    win.loadFile(indexPath);
+
+}
+
+app.whenReady().then(createWindow);
+
+app.on("window-all-closed", () => {
+
+    if (process.platform !== "darwin") {
+
+        app.quit();
+
+    }
+
+});

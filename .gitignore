@@ -1,28 +1,21 @@
+# ==========================================================
 # Python
-__pycache__/
-*.pyc
-*.pyo
+# ==========================================================
 
-# Virtual environments
 venv/
 .venv/
+__pycache__/
+*.pyc
 
-# IDE
-.vscode/
-.idea/
+# ==========================================================
+# Generated Outputs
+# ==========================================================
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Generated CSV outputs
+output/
 clean_spi_transactions.csv
 decoded_transactions.csv
 tpm_command_summary.txt
 pcr_extend_summary.txt
-
-# Logs
-*.log
 
 # ==========================================================
 # Electron
@@ -32,16 +25,30 @@ app/node_modules/
 app/release/
 app/dist/
 
-# Build logs
-app/npm-debug.log*
-app/yarn-debug.log*
-app/yarn-error.log*
-
 # Electron Builder
 app/.cache/
 app/.electron/
 app/.webpack/
 
-# OS files
+# ==========================================================
+# Release Archives
+# ==========================================================
+
+Release/
+*.zip
+
+# ==========================================================
+# Logs
+# ==========================================================
+
+*.log
+app/npm-debug.log*
+app/yarn-debug.log*
+app/yarn-error.log*
+
+# ==========================================================
+# OS Files
+# ==========================================================
+
 .DS_Store
 Thumbs.db
